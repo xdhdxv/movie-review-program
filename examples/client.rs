@@ -19,7 +19,7 @@ fn main() {
     let payer = keypair::read_keypair_file(config.keypair_path).unwrap();
 
     let movie_review_payload = MovieReviewPayload {
-        descriptor: 0,
+        discriminator: 0,
         title: String::from("title"),
         rating: 10,
         description: String::from("description")
@@ -45,7 +45,7 @@ fn main() {
 
 #[derive(BorshSerialize)]
 struct MovieReviewPayload {
-    descriptor: u8,
+    discriminator: u8,
     title: String,
     rating: u8,
     description: String
