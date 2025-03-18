@@ -1,0 +1,23 @@
+[package]
+name = "movie_review_program"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib", "lib"]
+
+[dependencies]
+borsh = "1.5.5"
+solana-program = "2.2.1"
+
+[[example]]
+name = "client"
+path = "examples/client.rs"
+
+[dev-dependencies]
+solana-cli-config = "2.2.3"
+solana-client = "2.2.3"
+solana-program-test = "2.2.3"
+solana-sdk = "2.2.1"
+tokio = "1.44.1"
+rustls-webpki = "0.102"
