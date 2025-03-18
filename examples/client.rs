@@ -5,9 +5,11 @@ use solana_cli_config::{CONFIG_FILE, Config};
 use solana_client::rpc_client::RpcClient;
 
 use solana_sdk::{
-    signature::{keypair, Signer}, 
-    instruction::Instruction,
+    signature::{keypair, Signer},
+    pubkey::Pubkey, 
+    instruction::{Instruction, AccountMeta},
     transaction::Transaction,
+    system_program,
 };
 
 fn main() {
@@ -25,10 +27,27 @@ fn main() {
         description: String::from("description")
     };
 
+    let (pda_account, _bump_seed) = Pubkey::find_program_address(
+        &[payer.pubkey().as_ref(), movie_review_payload.title.as_bytes().as_ref()], 
+        &program_id
+    );
+
     let instruction = Instruction::new_with_borsh(
         program_id, 
         &movie_review_payload, 
-        vec![]
+        vec![
+            AccountMeta::new_readonly(
+                payer.pubkey(), 
+                false
+            ),
+            AccountMeta::new(
+                pda_account, 
+                false
+            ),
+            AccountMeta::new_readonly(system_program::ID, 
+                false
+            ),
+        ]
     );
 
     let transaction = Transaction::new_signed_with_payer(
