@@ -22,9 +22,9 @@ fn main() {
 
     let movie_review_payload = MovieReviewPayload {
         discriminator: 0,
-        title: String::from("title"),
-        rating: 10,
-        description: String::from("description")
+        title: String::from("test title"),
+        rating: 1,
+        description: String::from("test description")
     };
 
     let (pda_account, _bump_seed) = Pubkey::find_program_address(
@@ -57,9 +57,44 @@ fn main() {
         client.get_latest_blockhash().unwrap()
     );
 
+    println!("Creating movie review");
     let tx_signature = client.send_and_confirm_transaction_with_spinner(&transaction).unwrap();
 
     println!("tx signature: {}", tx_signature);
+
+    let movie_review_payload = MovieReviewPayload {
+        discriminator: 1,
+        title: String::from("test title"),
+        rating: 5,
+        description: String::from("new description")
+    };
+
+    let instruction = Instruction::new_with_borsh(
+        program_id, 
+        &movie_review_payload, 
+        vec![
+            AccountMeta::new(
+                payer.pubkey(), 
+                true
+            ),
+            AccountMeta::new(
+                pda_account, 
+                false
+            )
+        ]
+    );
+
+    let transaction = Transaction::new_signed_with_payer(
+        &[instruction], 
+        Some(&payer.pubkey()), 
+        &[&payer], 
+        client.get_latest_blockhash().unwrap()
+    );
+
+    println!("Updating movie review");
+    let tx_signature = client.send_and_confirm_transaction_with_spinner(&transaction).unwrap();
+
+    println!("tx signature: {}", tx_signature);    
 }
 
 #[derive(BorshSerialize)]

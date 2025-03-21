@@ -7,6 +7,11 @@ pub enum MovieInstruction {
         title: String,
         rating: u8,
         description: String,
+    },
+    UpdateMovieReview {
+        title: String,
+        rating: u8,
+        description: String,
     }
 }
 
@@ -18,14 +23,19 @@ impl MovieInstruction {
         let payload = MovieReviewPayload::try_from_slice(rest)
             .map_err(|_| ProgramError::InvalidInstructionData)?;
 
-        match variant {
-            0 => Ok(Self::AddMovieReview { 
+        Ok(match variant {
+            0 => Self::AddMovieReview { 
                 title: payload.title, 
                 rating: payload.rating, 
                 description: payload.description 
-            }),
-            _ => Err(ProgramError::InvalidInstructionData)
-        }
+            },
+            1 => Self::UpdateMovieReview { 
+                title: payload.title, 
+                rating: payload.rating, 
+                description: payload.description 
+            },
+            _ => return Err(ProgramError::InvalidInstructionData)
+        })
     }
 }
 
