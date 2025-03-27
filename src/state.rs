@@ -18,6 +18,8 @@ pub struct MovieAccountState {
 impl MovieAccountState {
     pub const DISCRIMINATOR: &'static str = "review";
 
+    pub const LEN: usize = 1000;
+
     pub fn get_account_size(title: String, description: String) -> usize {
         (4 + MovieAccountState::DISCRIMINATOR.len())
         + 1
@@ -38,7 +40,7 @@ pub struct MovieCommentCounter {
 impl MovieCommentCounter {
     pub const DISCRIMINATOR: &'static str = "counter";
     
-    pub const SIZE: usize =  (4 + MovieCommentCounter::DISCRIMINATOR.len())
+    pub const LEN: usize =  (4 + MovieCommentCounter::DISCRIMINATOR.len())
         + 1
         + 8;
 }

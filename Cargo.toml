@@ -9,6 +9,8 @@ crate-type = ["cdylib", "lib"]
 [dependencies]
 borsh = "1.5.5"
 solana-program = "2.2.1"
+spl-associated-token-account = { version = "6.0.0", features = [ "no-entrypoint" ] }
+spl-token = "7.0.0"
 thiserror = "2.0.12"
 
 [[example]]
@@ -21,4 +23,3 @@ solana-client = "2.2.3"
 solana-program-test = "2.2.3"
 solana-sdk = "2.2.1"
 tokio = "1.44.1"
-rustls-webpki = "0.102"

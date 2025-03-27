@@ -16,6 +16,9 @@ pub enum ReviewError {
     // Error 3
     #[error("Rating greater than 5 or less than 1")]
     InvalidRating,
+    // Error 4
+    #[error("Account do not match")]
+    IncorrectAccount,
 }
 
 impl From<ReviewError> for ProgramError {
